@@ -1,0 +1,280 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+\usetheme{metropolis} % Use metropolis theme
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+\usepackage{graphicx}
+
+% % % Meta % % %
+\title{Database Concepts}
+\date{\today}
+\author{author}
+\institute{company}
+\begin{document}
+\maketitle
+
+% % % % TOC % % % % %
+\begin{frame}{Table of contents}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents
+\end{frame}
+
+% % % % Data Models % % % % %
+\section{Data Models}
+\begin{frame}{Types of Data Models}
+\begin{itemize}
+    \item Relational Data Model
+    \item Semi-structed Data Model
+    \item Entity-Relationship Model
+    \item Object-based Data Model
+\end{itemize}
+\end{frame}
+\begin{frame} {Relational Data Model}
+    \begin{table}[]
+        \centering
+        \begin{tabular}{|l|c|}
+        \hline
+            id & name \\
+            \hline
+            1 & John Doe \\
+            2 & Vikram \\
+            3 & Kyle \\
+            \hline
+        \end{tabular}
+        \caption{Relational data}
+        \label{tab:my_label}
+    \end{table}
+    This type of model designs the data in the form of rows and columns within a table. Thus, a relational model uses tables for representing data and in-between relationships. Tables are also called relations. 
+\end{frame}
+\begin{frame}{Semi-structed Data Model}
+        The semistructured data model allows the data specifications at places where the individual data items of the same type may have different attributes sets.
+
+        Example:
+        \begin{itemize}
+            \item \alert{JSON} - Javascript Object Notation
+        \item \alert{XML} - Extensible Markup Language
+        \end{itemize}
+\end{frame}
+\begin{frame}{Entity Relationship Model}
+    \begin{columns}[onlytextwidth, T]
+    \begin{column}{0.47\linewidth}
+    \begin{itemize}
+        \item An Entity-Relationship Model represents the structure of the database with the help of a diagram. 
+        \item ER Diagram in DBMS is widely used to describe the conceptual design of databases. It helps both users and database developers to preview the structure of the database before implementing the database
+    \end{itemize}
+    \end{column}
+    \begin{column}{0.47\linewidth}
+        \begin{center}     \includegraphics[width=\linewidth,height=0.5\textheight]{demo/assets/er_attributes_derived.png}
+        \end{center}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Object Based Data Model}
+\begin{columns}[onlytextwidth, T]
+    \begin{column}{0.47\linewidth}
+        \begin{itemize}
+            \item An object-oriented database (OOD) is a database system that can work with complex data objects — that is, objects that mirror those used in object-oriented programming languages.
+            \item Object-oriented database management systems work in concert with OOP to facilitate the storage and retrieval of object-oriented data.
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.47\linewidth}
+    \includegraphics[width=\linewidth, height=\textheight, keepaspectratio]{demo/assets/oob.png}
+    \end{column}
+\end{columns}
+\end{frame}
+
+% % % % Normalization % % % % 
+\section{Normalization}
+\begin{frame} {Why Normalize?}
+    \begin{itemize}
+        \item The main purpose of database normalization is to avoid complexities, eliminate duplicates, and organize data in a consistent way. 
+        \item In normalization, the data is divided into several tables linked together with relationships.
+    \end{itemize}
+    \metroset{block=fill}
+    \begin{alertblock}{Types of Forms?}
+    There are 6 different Normalization forms, among of which only 1NF, 2NF, 3NF are practically feasible.
+    \end{alertblock}
+\end{frame}
+\begin{frame}[allowframebreaks]{1NF, 2NF, 3NF}
+    \metroset{block=fill}
+    \begin{block}{1NF Rules}
+        \begin{itemize}
+            \item a single cell must not hold more than one value (atomicity)
+            \item there must be a primary key for identification
+            \item no duplicated rows or columns
+            \item each column must have only one value for each row in the table
+        \end{itemize}
+    \end{block}
+    \begin{block}{2NF Rules}
+        \begin{itemize}
+            \item it’s already in 1NF
+            \item has no partial dependency. That is, all non-key attributes are fully dependent on a primary key.
+        \end{itemize}
+    \end{block}
+    \begin{block}{3NF Rules}
+        \begin{itemize}
+            \item be in 2NF
+            \item have no transitive partial dependency.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Example 1NF}
+    \begin{table}
+    \caption{employee data}
+    \begin{tabular}{cccccc}
+      \toprule
+      empid & empName & jobCode & job & stateCode &  homeState \\
+      \midrule
+      001 & Alice & j01 & Chef & 26 & Michigan \\
+      001 & Alice & j02 & Waiter & 26 & Michigan \\
+      002 & Bob & j02 &  Waiter & 56 & Wyoming \\
+      002 & Bob & j03 & Bartender & 56 & Wyoming \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Example 2NF}
+    \begin{columns}[onlytextwidth, T]
+        \begin{column}{0.33\linewidth}
+            \begin{table}
+                \caption{Employee roles}
+                    \begin{tabular}{cc}
+                      \toprule
+                      empid & jobCode \\
+                      \midrule
+                      001 & j01 \\
+                      001 & j02 \\
+                      002 & j02 \\
+                      002 & j03 \\
+                    \bottomrule
+                  \end{tabular}
+                \end{table}
+            \end{column}
+        \begin{column}{0.75\linewidth}
+            \begin{table}
+                \caption{Employees}
+                    \begin{tabular}{cccc}
+                      \toprule
+                      empid & empName & stateCode & homeState \\
+                      \midrule
+                      001 & Alice & 26 & Michigan \\
+                      002 & Bob & 56 & Wyoming \\
+                    \bottomrule
+                  \end{tabular}
+                \end{table}
+            \end{column}
+    \end{columns}
+    \framebreak
+    \begin{table}
+    \caption{Jobs}
+        \begin{tabular}{cc}
+          \toprule
+            jobCode & job \\
+          \midrule
+          j01 & Chef \\
+          j02 & Waiter \\
+          j03 & Bartender \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example 3NF}
+    \begin{alertblock}{Note}
+    
+        From 2NF example, we have to only make changes to Employees table
+    \end{alertblock}
+    
+    \begin{columns}[onlytextwidth, T]
+    \begin{column}{0.5\linewidth}
+            \begin{table}
+                \caption{Employees}
+                    \begin{tabular}{ccc}
+                      \toprule
+                      empid & empName & stateCode \\
+                      \midrule
+                      001 & Alice & 26 \\
+                      002 & Bob & 56 \\
+                    \bottomrule
+                  \end{tabular}
+                \end{table}
+            \end{column}
+            \begin{column}{0.5\linewidth}
+                \begin{table}
+                \caption{states}
+                    \begin{tabular}{cc}
+                      \toprule
+                     stateCode & homeState \\
+                      \midrule
+                      26 & Michigan \\
+                      56 & Wyoming \\
+                    \bottomrule
+                  \end{tabular}
+                \end{table}
+            \end{column}
+    \end{columns}
+\end{frame}
+
+% % % % % Data Cleansing % % % % 
+\section{Data Cleansing}
+\begin{frame}{What is Data Cleansing}
+    Data cleaning — also known as data cleansing or data scrubbing — is the process of modifying or removing data that’s inaccurate, duplicate, incomplete, incorrectly formatted, or corrupted within a dataset.
+
+    
+    \metroset{block=fill}
+    \begin{alertblock} {but why?}
+        Without cleaning data first, the dataset is more likely to be inaccurate, unorganized, and incomplete. Any data analysis will therefore be more difficult, less clear, and less accurate — and so will the decisions based on that data analysis. 
+    \end{alertblock} 
+\end{frame}
+\begin{frame}[allowframebreaks]{Steps Involved in Data cleaning}
+\begin{enumerate}
+    \item Identify the Critical Data Fields
+        \begin{itemize}
+            \item Companies have access to more data now than ever before, but not all of it is equally useful. The first step in data cleansing is to determine which types of data or data fields are critical for a given project or process.
+        \end{itemize}
+    \item Collect the Data
+        \begin{itemize}
+            \item After the relevant data fields are identified, the data they contain is collected, sorted, and organized.
+        \end{itemize}
+    \item Discard Duplicate Values
+        \begin{itemize}
+            \item After the data has been collected, the process of resolving inaccuracies begins. Duplicate values are identified and removed.
+        \end{itemize}
+    \item Resolve Empty Values
+        \begin{itemize}
+            \item Data cleansing tools search each field for missing values, and can then fill in those values to create a complete data set and avoid gaps in information.
+        \end{itemize}
+\end{enumerate}
+\end{frame}
+% % % Star Schema % % % % % 
+\section{Star Schema}
+\begin{frame}[allowframebreaks] {Star Schema}
+    \metroset{block=fill}
+    \begin{itemize}
+        \item A star schema is a type of data modeling technique used in data warehousing to represent data in a structured and intuitive way. 
+        \item In a star schema, data is organized into a \alert{central fact table} that contains the measures of interest, surrounded by dimension tables that describe the attributes of the measures.
+        \item For example, in a sales data warehouse, the fact table might contain sales revenue, units sold, and profit margins. Each record in the fact table represents a specific event or transaction, such as a sale or order.
+    \end{itemize}
+    \framebreak
+    \begin{itemize}
+        \item Star schemas \alert{denormalize} the data. \item The purpose is to trade some redundancy (duplication of data) in the data model for increased query speed, by avoiding computationally expensive join operations.
+        \item In this model, the fact table is normalized but the dimensions tables are not. That is, data from the fact table exists only on the fact table, but dimensional tables may hold redundant data.
+    \end{itemize}
+    \framebreak
+    \begin{center}
+        \includegraphics[width=\linewidth, height=0.8\textheight, keepaspectratio]{demo/assets/star-schema-erd.png}
+    \end{center}
+\end{frame}
+
+% % % % StandOut % % % % % %
+\begin{frame}[standout]
+Thank You!
+\end{frame}
+\end{document}
